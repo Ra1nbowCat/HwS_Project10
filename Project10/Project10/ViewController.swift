@@ -43,6 +43,9 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
     
     @objc func addNewPerson() {
         let picker = UIImagePickerController()
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            picker.sourceType = .camera
+        }
         picker.allowsEditing = true
         picker.delegate = self
         present(picker, animated: true)
@@ -83,9 +86,14 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
         })
                      
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        ac.addAction(UIAlertAction(title: "Delete person", style: .default) { [weak self] _ in
+            print("Hi")
+            self?.people.remove(at: indexPath.item)
+            self?.collectionView.deleteItems(at: [indexPath])
+        })
                      
         present(ac, animated: true)
     }
-    
 }
 
